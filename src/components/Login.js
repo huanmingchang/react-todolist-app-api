@@ -1,5 +1,6 @@
 import navlogo from '../images/navlogo.png'
 import homepage from '../images/homepage-bg.png'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
   return (
@@ -42,9 +43,9 @@ const Login = () => {
               type='button'
               value='登入'
             />
-            <a className='formControls_btnLink' href=''>
+            <Link className='formControls_btnLink' to='/register'>
               註冊帳號
-            </a>
+            </Link>
           </form>
         </div>
       </div>
