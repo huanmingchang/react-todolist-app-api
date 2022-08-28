@@ -631,3 +631,9 @@ nav ul a span {
   width: 240px;
   height: 250.29px;
 }
+
+.not-found {
+  text-align: center;
+  padding-top: 3rem;
+  font-size: 3rem;
+}
