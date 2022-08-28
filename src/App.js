@@ -3,9 +3,13 @@ import Nav from './components/Nav'
 import Input from './components/Input'
 import Todos from './components/Todos'
 import NoContent from './components/NoContent'
+import Login from './components/Login'
+import Register from './components/Register'
+import NotFound from './components/NotFound'
 import { v4 as uuidv4 } from 'uuid'
 import Swal from 'sweetalert2'
 import { useState } from 'react'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
   const [todos, setTodos] = useState([
@@ -93,8 +97,8 @@ function App() {
     }
   }
 
-  return (
-    <div className='App'>
+  const TodoPage = () => {
+    return (
       <div id='todoListPage' className='bg-half'>
         <Nav />
         <div className='conatiner todoListPage vhContainer'>
@@ -163,6 +167,20 @@ function App() {
           </div>
         </div>
       </div>
+    )
+  }
+
+  return (
+    <div className='App'>
+      <HashRouter>
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
+          <Route path='todo' element={<TodoPage />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </HashRouter>
     </div>
   )
 }
