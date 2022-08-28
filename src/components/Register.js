@@ -76,7 +76,7 @@ const Register = () => {
             />
             <span>{errors.pwd?.message}</span>
 
-            <label className='formControls_label' htmlFor='pwd'>
+            <label className='formControls_label' htmlFor='confirmPwd'>
               再次輸入密碼
             </label>
             <input
