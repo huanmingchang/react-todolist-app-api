@@ -1,18 +1,51 @@
 import navlogo from '../images/navlogo.png'
 import homepage from '../images/homepage-bg.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const Register = () => {
   const [isProcessing, setIsProcessing] = useState(false)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm()
-  const onSubmit = (data) => console.log(data)
+  const API = 'https://todoo.5xcamp.us/'
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(`${API}users`, {
+        user: data,
+      })
+
+      if (response.status !== 201) {
+        throw new Error(response.data.message)
+      }
+
+      Swal.fire({
+        title: '恭喜你',
+        text: '註冊成功',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d87355',
+      })
+    } catch (error) {
+      console.log(error.response.status + error.response.data.message)
+
+      Swal.fire({
+        title: '註冊失敗',
+        text: '註冊帳號已被使用，請重新選擇帳號',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d87355',
+      })
+    }
+  }
 
   return (
     <div id='signUpPage' className='bg-yellow'>
@@ -45,36 +78,36 @@ const Register = () => {
             />
             <span>{errors.email?.message}</span>
 
-            <label className='formControls_label' htmlFor='name'>
+            <label className='formControls_label' htmlFor='nickname'>
               您的暱稱
             </label>
             <input
               className='formControls_input'
               type='text'
-              name='name'
-              id='name'
+              name='nickname'
+              id='nickname'
               placeholder='請輸入您的暱稱'
-              {...register('name', {
+              {...register('nickname', {
                 required: { value: true, message: '此欄位不可留空' },
               })}
             />
-            <span>{errors.name?.message}</span>
+            <span>{errors.nickname?.message}</span>
 
-            <label className='formControls_label' htmlFor='pwd'>
+            <label className='formControls_label' htmlFor='password'>
               密碼
             </label>
             <input
               className='formControls_input'
               type='password'
-              name='pwd'
-              id='pwd'
+              name='password'
+              id='password'
               placeholder='請輸入密碼'
-              {...register('pwd', {
+              {...register('password', {
                 required: { value: true, message: '此欄位不可留空' },
                 minLength: { value: 6, message: 'password 需大於 6 碼' },
               })}
             />
-            <span>{errors.pwd?.message}</span>
+            <span>{errors.password?.message}</span>
 
             <label className='formControls_label' htmlFor='confirmPwd'>
               再次輸入密碼
@@ -88,7 +121,7 @@ const Register = () => {
               {...register('confirmPwd', {
                 required: { value: true, message: '此欄位不可留空' },
                 validate: (value: string) => {
-                  if (watch('pwd') != value) {
+                  if (watch('password') != value) {
                     return '密碼不一致'
                   }
                 },
