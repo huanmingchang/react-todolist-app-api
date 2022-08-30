@@ -1,7 +1,7 @@
 import navlogo from '../images/navlogo.png'
 import homepage from '../images/homepage-bg.png'
 import { Link, useNavigate } from 'react-router-dom'
-import { get, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -20,7 +20,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       setIsProcessing(true)
-      const response = await axios.post(`${API}/users/sign_in`, { user: data })
+      const response = await axios.post(`${API}users/sign_in`, { user: data })
 
       if (response.status !== 200) {
         throw new Error(response.data.message)
