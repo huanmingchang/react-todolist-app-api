@@ -26,6 +26,8 @@ const Login = () => {
         throw new Error(response.data.message)
       }
 
+      setToken(response.headers.authorization)
+
       Swal.fire({
         title: '恭喜你',
         text: '登入成功',
@@ -33,7 +35,9 @@ const Login = () => {
         confirmButtonText: 'OK',
         confirmButtonColor: '#d87355',
       })
+
       setIsProcessing(false)
+      navigate('/todo')
     } catch (error) {
       setIsProcessing(false)
       console.log(error.response.status + error.response.data.message)
