@@ -1,6 +1,6 @@
 import './styles/App.css'
 import Login from './components/Login'
-import Register from './components/Register'
+import Signup from './components/Signup'
 import TodoPage from './components/TodoPage'
 import NotFound from './components/NotFound'
 import { AuthContext, useAuth } from './components/Context'
@@ -17,7 +17,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Login />} />
             <Route path='login' element={<Login />} />
-            <Route path='register' element={<Register />} />
+            <Route path='signup' element={<Signup />} />
             <Route path='todo' element={<TodoPage />} />
             <Route path='*' element={<NotFound />} />
           </Routes>

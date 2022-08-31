@@ -6,7 +6,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-const Register = () => {
+const Signup = () => {
   const [isProcessing, setIsProcessing] = useState(false)
   const navigate = useNavigate()
   const {
@@ -153,4 +153,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Signup
