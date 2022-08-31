@@ -363,6 +363,10 @@ nav ul a span {
   font-size: 1rem;
 }
 
+.formControls_btnSubmit:disabled {
+  background: #666666;
+}
+
 .formControls a {
   text-decoration: none;
 }
