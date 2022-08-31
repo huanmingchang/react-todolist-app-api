@@ -11,7 +11,8 @@ const Todos = (props) => {
     )
   }
 
-  const deleteTodo = (item) => {
+  const deleteTodo = (item, e) => {
+    e.preventDefault()
     Swal.fire({
       title: '稍等一下',
       text: '確定要刪除這筆待辦事項？',
@@ -45,7 +46,10 @@ const Todos = (props) => {
               <span>{item.content}</span>
             </label>
             <a href='#'>
-              <i className='fa fa-times' onClick={() => deleteTodo(item)}></i>
+              <i
+                className='fa fa-times'
+                onClick={(e) => deleteTodo(item, e)}
+              ></i>
             </a>
           </li>
         )

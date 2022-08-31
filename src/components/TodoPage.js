@@ -46,7 +46,8 @@ const TodoPage = () => {
     return todos.filter((todo) => todo.completed === false).length + ' '
   }
 
-  const clearCompleted = () => {
+  const clearCompleted = (e) => {
+    e.preventDefault()
     Swal.fire({
       title: '稍等一下',
       text: '確定要清除所有完成事項？',
@@ -64,7 +65,8 @@ const TodoPage = () => {
     })
   }
 
-  const changeTab = (tab) => {
+  const changeTab = (tab, e) => {
+    e.preventDefault()
     if (tab === 'all') {
       setCurrentTab('all')
     }
@@ -111,7 +113,7 @@ const TodoPage = () => {
                   <a
                     href='#'
                     className={currentTab === 'all' ? 'active' : ''}
-                    onClick={() => changeTab('all')}
+                    onClick={(e) => changeTab('all', e)}
                   >
                     全部
                   </a>
@@ -120,7 +122,7 @@ const TodoPage = () => {
                   <a
                     href='#'
                     className={currentTab === 'active' ? 'active' : ''}
-                    onClick={() => changeTab('active')}
+                    onClick={(e) => changeTab('active', e)}
                   >
                     待完成
                   </a>
@@ -129,7 +131,7 @@ const TodoPage = () => {
                   <a
                     href='#'
                     className={currentTab === 'completed' ? 'active' : ''}
-                    onClick={() => changeTab('completed')}
+                    onClick={(e) => changeTab('completed', e)}
                   >
                     已完成
                   </a>
@@ -151,7 +153,7 @@ const TodoPage = () => {
                 )}
                 <div className='todoList_statistics'>
                   <p>{showNotCompletedTodos()}個待完成項目</p>
-                  <a href='#' onClick={() => clearCompleted()}>
+                  <a href='#' onClick={(e) => clearCompleted(e)}>
                     清除已完成項目
                   </a>
                 </div>

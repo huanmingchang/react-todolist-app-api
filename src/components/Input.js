@@ -4,7 +4,8 @@ import Swal from 'sweetalert2'
 const Input = (props) => {
   const { newTodo, setNewTodo, setTodos } = props
 
-  const addNewTodo = () => {
+  const addNewTodo = (e) => {
+    e.preventDefault()
     if (newTodo.trim().length === 0) {
       Swal.fire({
         text: '待辦事項不可為空白',
@@ -37,7 +38,7 @@ const Input = (props) => {
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}
       />
-      <a href='#' onClick={() => addNewTodo()}>
+      <a href='#' onClick={(e) => addNewTodo(e)}>
         <i className='fa fa-plus'></i>
       </a>
     </div>
