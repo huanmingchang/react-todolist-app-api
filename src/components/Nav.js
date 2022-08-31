@@ -29,7 +29,7 @@ const Nav = () => {
       })
 
       setToken('')
-      navigate('/login')
+      navigate('/')
     } catch (error) {
       console.log(error.message + ' ' + error.response.data.message)
       Swal.fire({

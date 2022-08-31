@@ -16,7 +16,6 @@ function App() {
         <HashRouter>
           <Routes>
             <Route path='/' element={<Login />} />
-            <Route path='login' element={<Login />} />
             <Route path='signup' element={<Signup />} />
             <Route path='todo' element={<TodoPage />} />
             <Route path='*' element={<NotFound />} />

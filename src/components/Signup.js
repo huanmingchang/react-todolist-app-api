@@ -38,7 +38,7 @@ const Signup = () => {
       })
 
       setIsProcessing(false)
-      navigate('/login')
+      navigate('/')
     } catch (error) {
       setIsProcessing(false)
       console.log(error.response.status + error.response.data.message)
@@ -143,7 +143,7 @@ const Signup = () => {
               value={isProcessing ? '註冊中...' : '註冊帳號'}
               disabled={isProcessing}
             />
-            <Link className='formControls_btnLink' to='/login'>
+            <Link className='formControls_btnLink' to='/'>
               登入
             </Link>
           </form>
