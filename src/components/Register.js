@@ -14,11 +14,13 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm()
   const API = 'https://todoo.5xcamp.us/'
 
   const onSubmit = async (data) => {
     try {
+      setIsProcessing(true)
       const response = await axios.post(`${API}users`, {
         user: data,
       })
@@ -34,7 +36,11 @@ const Register = () => {
         confirmButtonText: 'OK',
         confirmButtonColor: '#d87355',
       })
+
+      setIsProcessing(false)
+      navigate('/login')
     } catch (error) {
+      setIsProcessing(false)
       console.log(error.response.status + error.response.data.message)
 
       Swal.fire({
@@ -44,6 +50,8 @@ const Register = () => {
         confirmButtonText: 'OK',
         confirmButtonColor: '#d87355',
       })
+
+      reset()
     }
   }
 
@@ -132,7 +140,8 @@ const Register = () => {
             <input
               className='formControls_btnSubmit'
               type='submit'
-              value='註冊帳號'
+              value={isProcessing ? '註冊中...' : '註冊帳號'}
+              disabled={isProcessing}
             />
             <Link className='formControls_btnLink' to='/login'>
               登入
