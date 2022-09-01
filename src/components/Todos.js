@@ -1,6 +1,10 @@
+import { useAuth } from './Context'
 import Swal from 'sweetalert2'
+import axios from 'axios'
 
 const Todos = (props) => {
+  const API = 'https://todoo.5xcamp.us/'
+  const { token } = useAuth()
   const { todos, setTodos, filteredTodos } = props
 
   const changeCompleted = (item) => {
@@ -23,6 +27,26 @@ const Todos = (props) => {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        async function deleteTodoAPI() {
+          try {
+            const response = await axios.delete(`${API}todos/${item.id}`, {
+              headers: {
+                Authorization: token,
+              },
+            })
+          } catch (error) {
+            console.log(error)
+            Swal.fire({
+              title: '錯誤',
+              text: '目前無法刪除待辦清單，請稍後再試',
+              icon: 'warning',
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#d87355',
+            })
+          }
+        }
+
+        deleteTodoAPI()
         setTodos(todos.filter((todo) => todo.id !== item.id))
       }
 
