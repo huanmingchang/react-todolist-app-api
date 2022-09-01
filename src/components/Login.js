@@ -105,7 +105,7 @@ const Login = () => {
               value={isProcessing ? '登入中...' : '登入'}
               disabled={isProcessing}
             />
-            <Link className='formControls_btnLink' to='/register'>
+            <Link className='formControls_btnLink' to='/signup'>
               註冊帳號
             </Link>
           </form>

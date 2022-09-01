@@ -6,7 +6,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-const Register = () => {
+const Signup = () => {
   const [isProcessing, setIsProcessing] = useState(false)
   const navigate = useNavigate()
   const {
@@ -38,7 +38,7 @@ const Register = () => {
       })
 
       setIsProcessing(false)
-      navigate('/login')
+      navigate('/')
     } catch (error) {
       setIsProcessing(false)
       console.log(error.response.status + error.response.data.message)
@@ -143,7 +143,7 @@ const Register = () => {
               value={isProcessing ? '註冊中...' : '註冊帳號'}
               disabled={isProcessing}
             />
-            <Link className='formControls_btnLink' to='/login'>
+            <Link className='formControls_btnLink' to='/'>
               登入
             </Link>
           </form>
@@ -153,4 +153,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Signup
