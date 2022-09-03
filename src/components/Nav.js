@@ -1,4 +1,3 @@
-import { useAuth } from './Context'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -6,7 +5,6 @@ import Swal from 'sweetalert2'
 const Nav = () => {
   const navigate = useNavigate()
   const API = 'https://todoo.5xcamp.us/'
-  const { setToken } = useAuth()
   const token = JSON.parse(localStorage.getItem('token'))
 
   const logout = async (e) => {
@@ -31,7 +29,6 @@ const Nav = () => {
 
       localStorage.removeItem('token')
       localStorage.removeItem('name')
-      setToken('')
       navigate('/')
     } catch (error) {
       console.log(error.message + ' ' + error.response.data.message)

@@ -1,11 +1,10 @@
-import { useAuth } from './Context'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const Input = (props) => {
   const API = 'https://todoo.5xcamp.us/'
   const { newTodo, setNewTodo, setTodos, getTodos } = props
-  const { token } = useAuth()
+  const token = JSON.parse(localStorage.getItem('token'))
 
   const addNewTodo = async (e) => {
     e.preventDefault()

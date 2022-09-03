@@ -1,6 +1,5 @@
 import navlogo from '../images/navlogo.png'
 import homepage from '../images/homepage-bg.png'
-import { useAuth } from './Context'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
@@ -9,7 +8,6 @@ import Swal from 'sweetalert2'
 
 const Login = () => {
   const [isProcessing, setIsProcessing] = useState(false)
-  const { token, setToken } = useAuth()
   const navigate = useNavigate()
   const {
     register,
@@ -27,7 +25,6 @@ const Login = () => {
         throw new Error(response.data.message)
       }
 
-      setToken(response.headers.authorization)
       localStorage.setItem(
         'token',
         JSON.stringify(response.headers.authorization)
