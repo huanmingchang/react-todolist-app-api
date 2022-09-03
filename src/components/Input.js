@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 
 const Input = (props) => {
   const API = 'https://todoo.5xcamp.us/'
-  const { newTodo, setNewTodo, setTodos } = props
+  const { newTodo, setNewTodo } = props
   const { token } = useAuth()
 
   const addNewTodo = async (e) => {
@@ -35,13 +35,6 @@ const Input = (props) => {
           },
         }
       )
-
-      setTodos((prev) => [
-        ...prev,
-        {
-          content: newTodo,
-        },
-      ])
       setNewTodo('')
     } catch (error) {
       console.log(error)

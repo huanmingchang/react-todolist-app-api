@@ -3,7 +3,6 @@ import Input from './Input'
 import Todos from './Todos'
 import NoContent from './NoContent'
 import { useAuth } from './Context'
-import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useState, useEffect } from 'react'
@@ -42,7 +41,7 @@ const TodoPage = () => {
     }
 
     getTodos()
-  }, [])
+  }, [[], todos])
 
   const showNotCompletedTodos = () => {
     return todos.filter((todo) => todo.completed === false).length + ' '

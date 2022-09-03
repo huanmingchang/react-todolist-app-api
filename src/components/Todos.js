@@ -63,7 +63,6 @@ const Todos = (props) => {
         }
 
         deleteTodoAPI()
-        setTodos(todos.filter((todo) => todo.id !== item.id))
       }
 
       return
