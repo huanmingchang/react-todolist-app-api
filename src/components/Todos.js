@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 const Todos = (props) => {
   const API = 'https://todoo.5xcamp.us/'
   const { token } = useAuth()
-  const { todos, setTodos, filteredTodos } = props
+  const { todos, setTodos, filteredTodos, getTodos } = props
 
   const changeCompleted = async (item) => {
     try {
@@ -19,6 +19,8 @@ const Todos = (props) => {
       if (response.status !== 200) {
         throw new Error(response.message)
       }
+
+      getTodos()
     } catch (error) {
       console.log(error)
       Swal.fire({
@@ -61,10 +63,9 @@ const Todos = (props) => {
             })
           }
         }
-
         deleteTodoAPI()
+        setTodos(todos.filter((todo) => todo.id !== item.id))
       }
-
       return
     })
   }

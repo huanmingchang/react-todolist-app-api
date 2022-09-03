@@ -14,37 +14,37 @@ const TodoPage = () => {
   const [currentTab, setCurrentTab] = useState('all')
   const { token } = useAuth()
 
-  useEffect(() => {
-    async function getTodos() {
-      try {
-        const response = await axios.get(`${API}todos`, {
-          headers: {
-            Authorization: token,
-          },
-        })
+  async function getTodos() {
+    try {
+      const response = await axios.get(`${API}todos`, {
+        headers: {
+          Authorization: token,
+        },
+      })
 
-        if (response.status !== 200) {
-          throw new Error(response.message)
-        }
-
-        setTodos(response.data.todos)
-      } catch (error) {
-        console.log(error)
-        Swal.fire({
-          title: '錯誤',
-          text: '目前無法取得待辦清單，請稍後再試',
-          icon: 'warning',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#d87355',
-        })
+      if (response.status !== 200) {
+        throw new Error(response.message)
       }
-    }
 
+      setTodos(response.data.todos)
+    } catch (error) {
+      console.log(error)
+      Swal.fire({
+        title: '錯誤',
+        text: '目前無法取得待辦清單，請稍後再試',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d87355',
+      })
+    }
+  }
+
+  useEffect(() => {
     getTodos()
-  }, [[], todos])
+  }, [])
 
   const showNotCompletedTodos = () => {
-    return todos.filter((todo) => todo.completed === false).length + ' '
+    return todos.filter((todo) => todo.completed_at === null).length + ' '
   }
 
   const clearCompleted = (e) => {
@@ -59,7 +59,16 @@ const TodoPage = () => {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
-        setTodos(todos.filter((todo) => todo.completed === false))
+        let completedTodos = todos.filter((todo) => todo.completed_at !== null)
+        console.log(completedTodos)
+        completedTodos.forEach((item) => {
+          axios.delete(`${API}todos/${item.id}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+        })
+        setTodos(todos.filter((todo) => todo.completed_at === null))
       }
 
       return
@@ -87,11 +96,11 @@ const TodoPage = () => {
     }
 
     if (currentTab === 'active') {
-      return todos.filter((todo) => !todo.completed)
+      return todos.filter((todo) => todo.completed_at === null)
     }
 
     if (currentTab === 'completed') {
-      return todos.filter((todo) => todo.completed)
+      return todos.filter((todo) => todo.completed_at !== null)
     }
   }
 
@@ -104,6 +113,7 @@ const TodoPage = () => {
             newTodo={newTodo}
             setNewTodo={setNewTodo}
             setTodos={setTodos}
+            getTodos={getTodos}
           />
           {todos.length === 0 ? (
             <NoContent />
@@ -149,6 +159,7 @@ const TodoPage = () => {
                       todos={todos}
                       setTodos={setTodos}
                       filteredTodos={filteredTodos()}
+                      getTodos={getTodos}
                     />
                   </ul>
                 )}
