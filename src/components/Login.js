@@ -28,6 +28,11 @@ const Login = () => {
       }
 
       setToken(response.headers.authorization)
+      localStorage.setItem(
+        'token',
+        JSON.stringify(response.headers.authorization)
+      )
+      localStorage.setItem('name', JSON.stringify(response.data.nickname))
 
       Swal.fire({
         title: '恭喜你',

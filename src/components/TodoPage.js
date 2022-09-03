@@ -12,7 +12,7 @@ const TodoPage = () => {
   const [todos, setTodos] = useState([])
   const [newTodo, setNewTodo] = useState('')
   const [currentTab, setCurrentTab] = useState('all')
-  const { token } = useAuth()
+  const token = JSON.parse(localStorage.getItem('token'))
 
   async function getTodos() {
     try {
