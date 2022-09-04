@@ -1,4 +1,3 @@
-import { useAuth } from './Context'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -6,7 +5,7 @@ import Swal from 'sweetalert2'
 const Nav = () => {
   const navigate = useNavigate()
   const API = 'https://todoo.5xcamp.us/'
-  const { token, setToken } = useAuth()
+  const token = JSON.parse(localStorage.getItem('token'))
 
   const logout = async (e) => {
     e.preventDefault()
@@ -28,7 +27,8 @@ const Nav = () => {
         confirmButtonColor: '#d87355',
       })
 
-      setToken('')
+      localStorage.removeItem('token')
+      localStorage.removeItem('name')
       navigate('/')
     } catch (error) {
       console.log(error.message + ' ' + error.response.data.message)
@@ -53,7 +53,12 @@ const Nav = () => {
       <ul>
         <li className='todo_sm'>
           <a href='#'>
-            <span>王小明的代辦</span>
+            <span>
+              {localStorage.getItem('name')
+                ? JSON.parse(localStorage.getItem('name'))
+                : 'User'}
+              的代辦
+            </span>
           </a>
         </li>
         <li>

@@ -1,14 +1,35 @@
 import Swal from 'sweetalert2'
+import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
 
 const Todos = (props) => {
-  const { todos, setTodos, filteredTodos } = props
+  const API = 'https://todoo.5xcamp.us/'
+  const token = JSON.parse(localStorage.getItem('token'))
+  const { todos, setTodos, filteredTodos, getTodos } = props
 
-  const changeCompleted = (item) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === item.id ? { ...todo, completed: !todo.completed } : todo
-      )
-    )
+  const changeCompleted = async (item) => {
+    try {
+      const response = await axios.patch(`${API}todos/${item.id}/toggle`, [], {
+        headers: {
+          Authorization: token,
+        },
+      })
+
+      if (response.status !== 200) {
+        throw new Error(response.message)
+      }
+
+      getTodos()
+    } catch (error) {
+      console.log(error)
+      Swal.fire({
+        title: '錯誤',
+        text: '目前無法修改待辦清單，請稍後再試',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d87355',
+      })
+    }
   }
 
   const deleteTodo = (item, e) => {
@@ -23,9 +44,27 @@ const Todos = (props) => {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        async function deleteTodoAPI() {
+          try {
+            const response = await axios.delete(`${API}todos/${item.id}`, {
+              headers: {
+                Authorization: token,
+              },
+            })
+          } catch (error) {
+            console.log(error)
+            Swal.fire({
+              title: '錯誤',
+              text: '目前無法刪除待辦清單，請稍後再試',
+              icon: 'warning',
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#d87355',
+            })
+          }
+        }
+        deleteTodoAPI()
         setTodos(todos.filter((todo) => todo.id !== item.id))
       }
-
       return
     })
   }
@@ -34,13 +73,13 @@ const Todos = (props) => {
     <>
       {filteredTodos.map((item) => {
         return (
-          <li key={item.id}>
+          <li key={item.id ? item.id : uuidv4()}>
             <label className='todoList_label'>
               <input
                 className='todoList_input'
                 type='checkbox'
-                value={item.completed}
-                checked={item.completed ? 'checked' : ''}
+                value={item.completed_at !== null ? true : false}
+                checked={item.completed_at !== null ? 'checked' : ''}
                 onChange={() => changeCompleted(item)}
               />
               <span>{item.content}</span>
