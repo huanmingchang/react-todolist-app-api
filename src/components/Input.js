@@ -1,32 +1,51 @@
-import { v4 as uuidv4 } from 'uuid'
+import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const Input = (props) => {
-  const { newTodo, setNewTodo, setTodos } = props
+  const API = 'https://todoo.5xcamp.us/'
+  const { newTodo, setNewTodo, setTodos, getTodos } = props
+  const token = JSON.parse(localStorage.getItem('token'))
 
-  const addNewTodo = (e) => {
+  const addNewTodo = async (e) => {
     e.preventDefault()
-    if (newTodo.trim().length === 0) {
+    try {
+      if (newTodo.trim().length === 0) {
+        Swal.fire({
+          text: '待辦事項不可為空白',
+          icon: 'warning',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#d87355',
+        })
+
+        setNewTodo('')
+        return
+      }
+
+      const response = await axios.post(
+        `${API}todos`,
+        {
+          todo: {
+            content: newTodo,
+          },
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      getTodos()
+      setNewTodo('')
+    } catch (error) {
+      console.log(error)
       Swal.fire({
-        text: '待辦事項不可為空白',
+        title: '錯誤',
+        text: '目前無法新增待辦清單，請稍後再試',
         icon: 'warning',
         confirmButtonText: 'OK',
         confirmButtonColor: '#d87355',
       })
-
-      setNewTodo('')
-      return
     }
-
-    setTodos((prev) => [
-      ...prev,
-      {
-        id: uuidv4(),
-        content: newTodo,
-        completed: false,
-      },
-    ])
-
     setNewTodo('')
   }
 

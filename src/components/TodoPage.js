@@ -2,48 +2,48 @@ import Nav from './Nav'
 import Input from './Input'
 import Todos from './Todos'
 import NoContent from './NoContent'
-import { v4 as uuidv4 } from 'uuid'
+import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const TodoPage = () => {
-  const [todos, setTodos] = useState([
-    {
-      id: uuidv4(),
-      content: '把冰箱發霉的檸檬拿去丟',
-      completed: true,
-    },
-    {
-      id: uuidv4(),
-      content: '打電話叫媽媽匯款給我',
-      completed: false,
-    },
-    {
-      id: uuidv4(),
-      content: '整理電腦資料夾',
-      completed: false,
-    },
-    {
-      id: uuidv4(),
-      content: '繳電費水費瓦斯費',
-      completed: false,
-    },
-    {
-      id: uuidv4(),
-      content: '約vicky禮拜三泡溫泉',
-      completed: false,
-    },
-    {
-      id: uuidv4(),
-      content: '約ada禮拜四吃晚餐',
-      completed: false,
-    },
-  ])
+  const API = 'https://todoo.5xcamp.us/'
+  const [todos, setTodos] = useState([])
   const [newTodo, setNewTodo] = useState('')
   const [currentTab, setCurrentTab] = useState('all')
+  const token = JSON.parse(localStorage.getItem('token'))
+
+  async function getTodos() {
+    try {
+      const response = await axios.get(`${API}todos`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+
+      if (response.status !== 200) {
+        throw new Error(response.message)
+      }
+
+      setTodos(response.data.todos)
+    } catch (error) {
+      console.log(error)
+      Swal.fire({
+        title: '錯誤',
+        text: '目前無法取得待辦清單，請稍後再試',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d87355',
+      })
+    }
+  }
+
+  useEffect(() => {
+    getTodos()
+  }, [])
 
   const showNotCompletedTodos = () => {
-    return todos.filter((todo) => todo.completed === false).length + ' '
+    return todos.filter((todo) => todo.completed_at === null).length + ' '
   }
 
   const clearCompleted = (e) => {
@@ -58,7 +58,16 @@ const TodoPage = () => {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
-        setTodos(todos.filter((todo) => todo.completed === false))
+        let completedTodos = todos.filter((todo) => todo.completed_at !== null)
+        console.log(completedTodos)
+        completedTodos.forEach((item) => {
+          axios.delete(`${API}todos/${item.id}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+        })
+        setTodos(todos.filter((todo) => todo.completed_at === null))
       }
 
       return
@@ -86,11 +95,11 @@ const TodoPage = () => {
     }
 
     if (currentTab === 'active') {
-      return todos.filter((todo) => !todo.completed)
+      return todos.filter((todo) => todo.completed_at === null)
     }
 
     if (currentTab === 'completed') {
-      return todos.filter((todo) => todo.completed)
+      return todos.filter((todo) => todo.completed_at !== null)
     }
   }
 
@@ -103,6 +112,7 @@ const TodoPage = () => {
             newTodo={newTodo}
             setNewTodo={setNewTodo}
             setTodos={setTodos}
+            getTodos={getTodos}
           />
           {todos.length === 0 ? (
             <NoContent />
@@ -148,6 +158,7 @@ const TodoPage = () => {
                       todos={todos}
                       setTodos={setTodos}
                       filteredTodos={filteredTodos()}
+                      getTodos={getTodos}
                     />
                   </ul>
                 )}
