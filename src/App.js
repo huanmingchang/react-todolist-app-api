@@ -3,19 +3,22 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import TodoPage from './components/TodoPage'
 import NotFound from './components/NotFound'
-import { useState } from 'react'
+import WithTokenRoute from './components/WithTokenRoute'
+import WithoutTokenRoute from './components/WithoutTokenRoute'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
-  const [token, setToken] = useState('')
-
   return (
     <div className='App'>
       <HashRouter>
         <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='signup' element={<Signup />} />
-          <Route path='todo' element={<TodoPage />} />
+          <Route element={<WithTokenRoute />}>
+            <Route path='/' element={<Login />} />
+            <Route path='signup' element={<Signup />} />
+          </Route>
+          <Route element={<WithoutTokenRoute />}>
+            <Route path='todo' element={<TodoPage />} />
+          </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>
       </HashRouter>
